@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicCottage_CottageAPI", "MagicCottage_CottageAPI\MagicCottage_CottageAPI.csproj", "{B09521F2-6BED-49F3-8604-04B2DE1C3D4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B09521F2-6BED-49F3-8604-04B2DE1C3D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B09521F2-6BED-49F3-8604-04B2DE1C3D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B09521F2-6BED-49F3-8604-04B2DE1C3D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B09521F2-6BED-49F3-8604-04B2DE1C3D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65D174E0-4725-4165-83F7-E8ACED34BAAC}
+	EndGlobalSection
+EndGlobal
