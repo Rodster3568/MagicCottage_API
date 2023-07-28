@@ -5,6 +5,7 @@ using MagicCottage_CottageAPI.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MagicCottage_CottageAPI.Controllers
 {
@@ -12,10 +13,12 @@ namespace MagicCottage_CottageAPI.Controllers
     [ApiController]
     public class CottageAPIController : ControllerBase
     {
+        private readonly ApplicationDbContext _db;
         private readonly ILogging _logger;
-        public CottageAPIController(ILogging logger) 
+        public CottageAPIController(ILogging logger,ApplicationDbContext db) 
         {
             _logger= logger;
+            _db= db;
         }
 
 
@@ -24,7 +27,7 @@ namespace MagicCottage_CottageAPI.Controllers
         public ActionResult<IEnumerable<CottageDTO>> GetCottages()
         {
             _logger.Log("Getting all cottages","");
-            return Ok(CottageStore.cottageList);
+            return Ok(_db.Cottages.ToList());
         }
         [HttpGet("{id:int}", Name ="GetCottage")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,7 +40,7 @@ namespace MagicCottage_CottageAPI.Controllers
                 _logger.Log("Get Cottage Error with Id " + id,"error");
                 return BadRequest();
             }
-            var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
+            var cottage =_db.Cottages.FirstOrDefault(u => u.Id == id);
             if (cottage == null)
             {
                 return NotFound();
@@ -50,7 +53,7 @@ namespace MagicCottage_CottageAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<CottageDTO> CreateCottage([FromBody] CottageDTO cottageDTO)
         {
-            if (CottageStore.cottageList.FirstOrDefault(u => u.Name.ToLower() == cottageDTO.Name.ToLower()) != null)
+            if (_db.Cottages.FirstOrDefault(u => u.Name.ToLower() == cottageDTO.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("CustomError", "Cottage already exists");
                 return BadRequest(ModelState);
@@ -63,8 +66,19 @@ namespace MagicCottage_CottageAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            cottageDTO.Id = CottageStore.cottageList.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
-            CottageStore.cottageList.Add(cottageDTO);
+            Cottage model = new()
+            {
+                Amenity = cottageDTO.Amenity,
+                Details = cottageDTO.Details,
+                Id = cottageDTO.Id,
+                ImageUrl = cottageDTO.ImageUrl,
+                Name = cottageDTO.Name,
+                Occupancy = cottageDTO.Occupancy,
+                Rate = cottageDTO.Rate,
+                Sqft = cottageDTO.Sqft
+            };
+            _db.Cottages.Add(model);
+            _db.SaveChanges();
             return CreatedAtRoute("GetCottage", new { id = cottageDTO.Id }, cottageDTO);
         }
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -77,12 +91,13 @@ namespace MagicCottage_CottageAPI.Controllers
             {
                 return BadRequest();
             }
-            var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
+            var cottage = _db.Cottages.FirstOrDefault(u => u.Id == id);
             if (cottage == null)
             {
                 return BadRequest();
             }
-            CottageStore.cottageList.Remove(cottage);
+            _db.Cottages.Remove(cottage);
+            _db.SaveChanges();
             return NoContent();
         }
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -94,11 +109,19 @@ namespace MagicCottage_CottageAPI.Controllers
             {
                 return BadRequest();
             }
-            var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
-            cottage.Name=cottageDTO.Name;
-            cottage.Sqft=cottageDTO.Sqft;
-            cottage.Occupancy=cottageDTO.Occupancy;
-
+            Cottage model = new()
+            {
+                Amenity = cottageDTO.Amenity,
+                Details = cottageDTO.Details,
+                Id = cottageDTO.Id,
+                ImageUrl = cottageDTO.ImageUrl,
+                Name = cottageDTO.Name,
+                Occupancy = cottageDTO.Occupancy,
+                Rate = cottageDTO.Rate,
+                Sqft = cottageDTO.Sqft
+            };
+            _db.Cottages.Update(model);
+            _db.SaveChanges();
             return NoContent();
         }
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -110,12 +133,36 @@ namespace MagicCottage_CottageAPI.Controllers
             {
                 return BadRequest();
             }
-            var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
+            var cottage = _db.Cottages.AsNoTracking().FirstOrDefault(u => u.Id == id);
+            CottageDTO cottageDTO = new()
+            {
+                Amenity = cottage.Amenity,
+                Details = cottage.Details,
+                Id = cottage.Id,
+                ImageUrl = cottage.ImageUrl,
+                Name = cottage.Name,
+                Occupancy = cottage.Occupancy,
+                Rate = cottage.Rate,
+                Sqft = cottage.Sqft
+            };
             if (cottage == null)
             {
                 return BadRequest();
             }
-            patchDTO.ApplyTo(cottage, ModelState);
+            patchDTO.ApplyTo(cottageDTO, ModelState);
+            Cottage model = new Cottage()
+            {
+                Amenity = cottageDTO.Amenity,
+                Details = cottageDTO.Details,
+                Id = cottageDTO.Id,
+                ImageUrl = cottageDTO.ImageUrl,
+                Name = cottageDTO.Name,
+                Occupancy = cottageDTO.Occupancy,
+                Rate = cottageDTO.Rate,
+                Sqft = cottageDTO.Sqft
+            };
+            _db.Cottages.Update(model);
+            _db.SaveChanges();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
