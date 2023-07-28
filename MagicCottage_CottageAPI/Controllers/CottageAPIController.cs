@@ -33,7 +33,7 @@ namespace MagicCottage_CottageAPI.Controllers
         {
             if (id == 0)
             {
-                _logger.LogError("Get Cottage Error with Id" + id);
+                _logger.LogError("Get Cottage Error with Id " + id);
                 return BadRequest();
             }
             var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
