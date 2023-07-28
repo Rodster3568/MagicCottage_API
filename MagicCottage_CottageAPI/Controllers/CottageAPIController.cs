@@ -1,4 +1,5 @@
 ﻿using MagicCottage_CottageAPI.Data;
+using MagicCottage_CottageAPI.Logging;
 using MagicCottage_CottageAPI.Models;
 using MagicCottage_CottageAPI.Models.Dto;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +12,10 @@ namespace MagicCottage_CottageAPI.Controllers
     [ApiController]
     public class CottageAPIController : ControllerBase
     {
-        private readonly ILogger<CottageAPIController> _logger;
-        public CottageAPIController(ILogger<CottageAPIController> logger) 
+        private readonly ILogging _logger;
+        public CottageAPIController(ILogging logger) 
         {
-            _logger=logger;
+            _logger= logger;
         }
 
 
@@ -22,7 +23,7 @@ namespace MagicCottage_CottageAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<CottageDTO>> GetCottages()
         {
-            _logger.LogInformation("Getting all cottages");
+            _logger.Log("Getting all cottages","");
             return Ok(CottageStore.cottageList);
         }
         [HttpGet("{id:int}", Name ="GetCottage")]
@@ -33,7 +34,7 @@ namespace MagicCottage_CottageAPI.Controllers
         {
             if (id == 0)
             {
-                _logger.LogError("Get Cottage Error with Id " + id);
+                _logger.Log("Get Cottage Error with Id " + id,"error");
                 return BadRequest();
             }
             var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
