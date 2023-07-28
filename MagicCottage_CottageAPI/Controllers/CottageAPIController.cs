@@ -74,5 +74,20 @@ namespace MagicCottage_CottageAPI.Controllers
             CottageStore.cottageList.Remove(cottage);
             return NoContent();
         }
+
+        [HttpPut("{id:int}", Name = "UpdateCottage")]
+        public IActionResult UpdateCottage(int id, [FromBody]CottageDTO cottageDTO)
+        {
+            if(cottageDTO==null || id != cottageDTO.Id)
+            {
+                return BadRequest();
+            }
+            var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
+            cottage.Name=cottageDTO.Name;
+            cottage.Sqft=cottageDTO.Sqft;
+            cottage.Occupancy=cottageDTO.Occupancy;
+
+            return NoContent();
+        }
     }
 }

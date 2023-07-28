@@ -10,5 +10,7 @@ namespace MagicCottage_CottageAPI.Models.Dto
         [MaxLength(30)]
         [MinLength(5)]
         public string Name { get; set; }
+        public int Occupancy { get; set; }
+        public int Sqft { get; set; }
     }
 }
