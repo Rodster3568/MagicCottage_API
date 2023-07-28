@@ -11,10 +11,18 @@ namespace MagicCottage_CottageAPI.Controllers
     [ApiController]
     public class CottageAPIController : ControllerBase
     {
+        private readonly ILogger<CottageAPIController> _logger;
+        public CottageAPIController(ILogger<CottageAPIController> logger) 
+        {
+            _logger=logger;
+        }
+
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<CottageDTO>> GetCottages()
         {
+            _logger.LogInformation("Getting all cottages");
             return Ok(CottageStore.cottageList);
         }
         [HttpGet("{id:int}", Name ="GetCottage")]
@@ -25,6 +33,7 @@ namespace MagicCottage_CottageAPI.Controllers
         {
             if (id == 0)
             {
+                _logger.LogError("Get Cottage Error with Id" + id);
                 return BadRequest();
             }
             var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
