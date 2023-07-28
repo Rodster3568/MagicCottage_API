@@ -2,6 +2,7 @@
 using MagicCottage_CottageAPI.Models;
 using MagicCottage_CottageAPI.Models.Dto;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicCottage_CottageAPI.Controllers
@@ -74,7 +75,8 @@ namespace MagicCottage_CottageAPI.Controllers
             CottageStore.cottageList.Remove(cottage);
             return NoContent();
         }
-
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("{id:int}", Name = "UpdateCottage")]
         public IActionResult UpdateCottage(int id, [FromBody]CottageDTO cottageDTO)
         {
@@ -87,6 +89,27 @@ namespace MagicCottage_CottageAPI.Controllers
             cottage.Sqft=cottageDTO.Sqft;
             cottage.Occupancy=cottageDTO.Occupancy;
 
+            return NoContent();
+        }
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPatch("{id:int}", Name = "UpdatePartialCottage")]
+        public IActionResult UpdatePartialCottage(int id, JsonPatchDocument<CottageDTO> patchDTO)
+        {
+            if(patchDTO==null || id==0)
+            {
+                return BadRequest();
+            }
+            var cottage = CottageStore.cottageList.FirstOrDefault(u => u.Id == id);
+            if (cottage == null)
+            {
+                return BadRequest();
+            }
+            patchDTO.ApplyTo(cottage, ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             return NoContent();
         }
     }
