@@ -4,6 +4,7 @@ using MagicCottage_CottageAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MagicCottage_CottageAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230728151953_SeedCottageTable")]
+    partial class SeedCottageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace MagicCottage_CottageAPI.Migrations
                         {
                             Id = 1,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 7, 28, 18, 21, 46, 697, DateTimeKind.Local).AddTicks(3152),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Featuring accommodation with a balcony, Royal Cottage Apartments is located in Ureki in the Guria Region. It features a garden and free private parking.",
                             ImageUrl = "https://avatars.mds.yandex.net/get-altay/3923637/2a0000017643b0ca787d1c5f0e0a4f99e929/XXL",
                             Name = "Royal Cottage",
@@ -83,7 +86,7 @@ namespace MagicCottage_CottageAPI.Migrations
                         {
                             Id = 2,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 7, 28, 18, 21, 46, 697, DateTimeKind.Local).AddTicks(3169),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Enjoy breathtaking views and serene surroundings at Cottage Hillside. This cozy retreat nestled amidst lush green hills offers a perfect getaway for nature lovers.",
                             ImageUrl = "https://example.com/cottage-hillside.jpg",
                             Name = "Cottage Hillside",
@@ -96,7 +99,7 @@ namespace MagicCottage_CottageAPI.Migrations
                         {
                             Id = 3,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 7, 28, 18, 21, 46, 697, DateTimeKind.Local).AddTicks(3171),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Escape to the tranquility of Lakeside Retreat Cottage, located by a picturesque lake. Indulge in fishing, boating, and relaxing walks along the scenic trails.",
                             ImageUrl = "https://example.com/lakeside-retreat-cottage.jpg",
                             Name = "Lakeside Retreat Cottage",
@@ -109,7 +112,7 @@ namespace MagicCottage_CottageAPI.Migrations
                         {
                             Id = 4,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 7, 28, 18, 21, 46, 697, DateTimeKind.Local).AddTicks(3174),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Experience rustic charm at its best in Cozy Woods Cabin. Nestled deep within a forested area, this cabin offers peace and seclusion away from the hustle and bustle of city life.",
                             ImageUrl = "https://example.com/cozy-woods-cabin.jpg",
                             Name = "Cozy Woods Cabin",
@@ -122,7 +125,7 @@ namespace MagicCottage_CottageAPI.Migrations
                         {
                             Id = 5,
                             Amenity = "",
-                            CreatedDate = new DateTime(2023, 7, 28, 18, 21, 46, 697, DateTimeKind.Local).AddTicks(3176),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "Unwind with stunning ocean views at Seaside Escape Bungalow. This charming bungalow is just steps away from the sandy beach, offering a perfect retreat for beach lovers.",
                             ImageUrl = "https://example.com/seaside-escape-bungalow.jpg",
                             Name = "Seaside Escape Bungalow",
